@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card Games</title>
+    <script src="js/app.js" type="module"></script>
+    <script src="js/war.js" type="module"></script>
+    <script src="js/blackjack.js" type="module"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="title">Choose Game</div>
+
+    <div class="choose-game">
+      <button class="game-selector" id="war-btn">War</button>
+      <button class="game-selector" id="blackjack-btn">Blackjack</button>
+    </div>
+
+    <div class="blackjack">Blackjack</div>
+
+    <div class="war">
+      <div class="computer-deck deck"></div>
+      <div class="computer-card-slot card-slot"></div>
+      <div class="text"></div>
+      <div class="player-deck deck"></div>
+      <div class="player-card-slot card-slot"></div>
+    </div>
+  </body>
+</html>
