@@ -15,7 +15,7 @@ document.getElementById("war-btn").addEventListener("click", () => {
 document.getElementById("blackjack-btn").addEventListener("click", () => {
   document.querySelector(".title").innerText = "Blackjack";
   document.querySelector(".war").style.display = "none";
-  document.querySelector(".blackjack").style.display = "block";
+  document.querySelector(".blackjack").style.display = "grid";
 
   const blackjack = new Blackjack();
   blackjack.startGame();

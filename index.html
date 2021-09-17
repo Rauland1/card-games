@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Card Games</title>
-    <script src="js/app.js" type="module"></script>
     <script src="js/war.js" type="module"></script>
     <script src="js/blackjack.js" type="module"></script>
     <link rel="stylesheet" href="css/styles.css" />
@@ -18,14 +17,22 @@
       <button class="game-selector" id="blackjack-btn">Blackjack</button>
     </div>
 
-    <div class="blackjack">Blackjack</div>
+    <div class="blackjack">
+      <div class="computer-deck deck" id="bj--computer-deck"></div>
+      <div class="computer-card-slot card-slot" id="bj--computer-slot"></div>
+      <div class="player-card-slot card-slot" id="bj--player-slot"></div>
+      <div class="buttons">
+        <button class="bj--buttons" id="hit">Hit</button>
+        <button class="bj--buttons" id="stay">Stay</button>
+      </div>
+    </div>
 
     <div class="war">
-      <div class="computer-deck deck"></div>
-      <div class="computer-card-slot card-slot"></div>
-      <div class="text"></div>
-      <div class="player-deck deck"></div>
-      <div class="player-card-slot card-slot"></div>
+      <div class="computer-deck deck" id="war--computer-deck"></div>
+      <div class="computer-card-slot card-slot" id="war--computer-slot"></div>
+      <div class="text" id="war--text"></div>
+      <div class="player-deck deck" id="war--player-deck"></div>
+      <div class="player-card-slot card-slot" id="war--player-slot"></div>
     </div>
   </body>
 </html>

@@ -1,5 +1,13 @@
 import Deck from "./deck.js";
 
+// Initialize War
+document.getElementById("war-btn").addEventListener("click", () => {
+  document.querySelector(".title").innerText = "War";
+  document.querySelector(".war").style.display = "grid";
+  document.querySelector(".blackjack").style.display = "none";
+  startGame();
+});
+
 const CARD_VALUE_MAP = {
   2: 2,
   3: 3,
@@ -16,30 +24,15 @@ const CARD_VALUE_MAP = {
   A: 14,
 };
 
-const computerCardSlot = document.querySelector(".computer-card-slot");
-const playerCardSlot = document.querySelector(".player-card-slot");
-const computerDeckElement = document.querySelector(".computer-deck");
-const playerDeckElement = document.querySelector(".player-deck");
-const text = document.querySelector(".text");
+const computerDeckElement = document.getElementById("war--computer-deck");
+const computerCardSlot = document.getElementById("war--computer-slot");
+const text = document.getElementById("war--text");
+const playerDeckElement = document.getElementById("war--player-deck");
+const playerCardSlot = document.getElementById("war--player-slot");
 
 let playerDeck, computerDeck, inRound, stop;
 
-export default class War {
-  startGame() {
-    const deck = new Deck();
-    deck.shuffle();
-
-    const deckMidpoint = Math.ceil(deck.numberOfCards / 2);
-    playerDeck = new Deck(deck.cards.slice(0, deckMidpoint));
-    computerDeck = new Deck(deck.cards.slice(deckMidpoint, deck.numberOfCards));
-    inRound = false;
-    stop = false;
-
-    roundCleanup();
-  }
-}
-
-document.querySelector(".war").addEventListener("click", () => {
+playerDeckElement.addEventListener("click", () => {
   if (stop) {
     startGame();
     return;
@@ -51,6 +44,19 @@ document.querySelector(".war").addEventListener("click", () => {
     flipCards();
   }
 });
+
+function startGame() {
+  const deck = new Deck();
+  deck.shuffle();
+
+  const deckMidpoint = Math.ceil(deck.numberOfCards / 2);
+  playerDeck = new Deck(deck.cards.slice(0, deckMidpoint));
+  computerDeck = new Deck(deck.cards.slice(deckMidpoint, deck.numberOfCards));
+  inRound = false;
+  stop = false;
+
+  roundCleanup();
+}
 
 function roundCleanup() {
   inRound = false;
@@ -67,8 +73,8 @@ function flipCards() {
   const playerCard = playerDeck.pop();
   const computerCard = computerDeck.pop();
 
-  playerCardSlot.appendChild(playerCard.getHTML());
-  computerCardSlot.appendChild(computerCard.getHTML());
+  playerCardSlot.appendChild(playerCard.getHTML(0));
+  computerCardSlot.appendChild(computerCard.getHTML(0));
 
   updateDeckCount();
 

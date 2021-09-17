@@ -3,22 +3,21 @@
   grid-template-columns: repeat(2, 10rem);
   grid-template-rows: 14rem 4rem 14rem;
   gap: 0.5rem;
-  cursor: pointer;
   justify-content: center;
   padding: 2rem 0;
-  width: 100%;
   background-color: lightgreen;
 }
 
-.computer-deck {
+.war .computer-deck {
   background-color: green;
 }
 
-.player-deck {
+.war .player-deck {
   background-color: blue;
+  cursor: pointer;
 }
 
-.text {
+.war .text {
   grid-column: span 2;
   font-weight: 600;
   font-size: 1.5rem;
