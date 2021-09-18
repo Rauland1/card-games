@@ -7,6 +7,8 @@ document.getElementById("blackjack-btn").addEventListener("click", () => {
   document.querySelector(".blackjack").style.display = "grid";
   hitButton.disabled = true;
   stayButton.disabled = true;
+  messageDiv.style.display = "block";
+  cleanUp();
 });
 
 // Card Values
@@ -48,6 +50,7 @@ let dealerHand = [];
 // Start Game
 function startGame() {
   console.clear();
+  messageDiv.style.display = "none";
 
   // New Deck
   deck = new Deck();
@@ -58,6 +61,8 @@ function startGame() {
 
   // Clear the board
   cleanUp();
+
+  computerScoreText.innerText = "?";
 
   // Deal cards
   dealToPlayer();
@@ -200,14 +205,12 @@ function gameOver(msg) {
 
 // Clean up the game
 function cleanUp() {
-  messageDiv.style.display = "none";
-
   // Remove cards from slots
   playerCardSlot.innerHTML = "";
   dealerCardSlot.innerHTML = "";
 
   // Reset text
-  computerScoreText.innerText = "?";
+  computerScoreText.innerText = "";
   playerScoreText.innerText = "";
   text.innerText = "";
 
