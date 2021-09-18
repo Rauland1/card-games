@@ -64,11 +64,12 @@ class Card {
   }
 
   // Generate card dynamically
-  getHTML(xOffset) {
+  getHTML(offset) {
     const cardDiv = document.createElement("div");
     cardDiv.innerText = this.suit;
     cardDiv.classList.add("card", this.color);
-    cardDiv.style.left = `${xOffset}rem`;
+    cardDiv.style.left = `${offset}rem`;
+    cardDiv.style.top = `${offset}rem`;
     cardDiv.dataset.value = `${this.value} ${this.suit}`;
     return cardDiv;
   }

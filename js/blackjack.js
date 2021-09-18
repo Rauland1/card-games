@@ -5,9 +5,11 @@ document.getElementById("blackjack-btn").addEventListener("click", () => {
   document.querySelector(".title").innerText = "Blackjack";
   document.querySelector(".war").style.display = "none";
   document.querySelector(".blackjack").style.display = "grid";
-  startGame();
+  hitButton.disabled = true;
+  stayButton.disabled = true;
 });
 
+// Card Values
 const CARD_VALUE_MAP = {
   2: 2,
   3: 3,
@@ -21,89 +23,200 @@ const CARD_VALUE_MAP = {
   J: 10,
   Q: 10,
   K: 10,
-  A: 11,
 };
 
-const computerDeckElement = document.getElementById("bj--computer-deck");
+// Get DOM elements
 const dealerCardSlot = document.getElementById("bj--computer-slot");
 const playerCardSlot = document.getElementById("bj--player-slot");
+const playerScoreText = document.querySelector(".player-score");
+const computerScoreText = document.querySelector(".computer-score");
+const messageDiv = document.querySelector(".message");
 
+const text = document.getElementById("bj--text");
 const hitButton = document.getElementById("hit");
 const stayButton = document.getElementById("stay");
+const startButton = document.getElementById("start-game");
 
-let deck, playerOffset, dealerOffset, playerTotal, dealerTotal;
+// Initialize variables
+let deck, playerOffset, dealerOffset, playerTotal, dealerTotal, hiddenCardDiv;
 let canHit = true;
 
+// Arrays to hold card values
+let playerHand = [];
+let dealerHand = [];
+
+// Start Game
 function startGame() {
+  console.clear();
+
+  // New Deck
   deck = new Deck();
+
+  // Shuffle two times just cause
   deck.shuffle();
+  deck.shuffle();
+
+  // Clear the board
+  cleanUp();
+
+  // Deal cards
+  dealToPlayer();
+  dealToDealer();
+  dealToPlayer();
+  dealToDealer();
+
+  hitButton.disabled = false;
+  stayButton.disabled = false;
+
+  if (playerTotal === 21) {
+    gameOver("You won on initial hand!");
+  } else if (dealerTotal === 21) {
+    revealCard();
+    computerScoreText.innerText = dealerTotal;
+    gameOver("Dealer won on initial hand!");
+  }
+}
+
+// Listen for click events
+startButton.addEventListener("click", () => {
+  startGame();
+});
+
+hitButton.addEventListener("click", () => {
+  if (canHit) dealToPlayer();
+
+  if (playerTotal === 21) victory();
+  else if (playerTotal > 21) bust();
+});
+
+stayButton.addEventListener("click", function dealerLoop() {
+  canHit = false;
+
+  revealCard();
+
+  dealToDealer();
+  computerScoreText.innerText = dealerTotal;
+
+  if (dealerTotal >= 17 && dealerTotal <= 21) {
+    if (playerTotal > dealerTotal) victory();
+    else if (playerTotal < dealerTotal) bust();
+    else tie();
+  } else if (dealerTotal < 17) {
+    if (playerTotal < dealerTotal) {
+      bust();
+    } else {
+      setTimeout(dealerLoop, 1000);
+    }
+  } else {
+    // If dealer hand > 21
+    victory();
+  }
+});
+
+function revealCard() {
+  if (!dealerCardSlot.contains(hiddenCardDiv))
+    dealerCardSlot.replaceChild(hiddenCardDiv, dealerCardSlot.childNodes[1]);
+}
+
+// Deal cards to player
+function dealToPlayer() {
+  const playerCard = deck.pop();
+  playerCardSlot.appendChild(playerCard.getHTML(playerOffset));
+  playerHand.push(playerCard.value);
+
+  playerTotal = calculateHand(playerHand);
+  playerScoreText.innerText = playerTotal;
+  playerOffset += 2.5;
+}
+
+// Deal cards to computer
+function dealToDealer() {
+  const dealerCard = deck.pop();
+
+  dealerHand.push(dealerCard.value);
+  dealerTotal = calculateHand(dealerHand);
+
+  if (dealerHand.length === 2) {
+    dealerCardSlot.appendChild(hiddenCard(dealerOffset));
+    hiddenCardDiv = dealerCard.getHTML(dealerOffset);
+  } else {
+    dealerCardSlot.appendChild(dealerCard.getHTML(dealerOffset));
+  }
+
+  dealerOffset += 2.5;
+}
+
+// Create hidden card
+function hiddenCard(offset) {
+  const hiddenCard = document.createElement("div");
+  hiddenCard.classList.add("card");
+  hiddenCard.style.backgroundImage = "url('assets/deck_back.png')";
+  hiddenCard.style.backgroundSize = "cover";
+  hiddenCard.style.left = `${offset}rem`;
+  hiddenCard.style.top = `${offset}rem`;
+  return hiddenCard;
+}
+
+// Calculate the score of given hand
+function calculateHand(hand) {
+  let total,
+    aces = 0;
+
+  total = hand.reduce((acc, curr) => {
+    if (curr !== "A") {
+      return acc + CARD_VALUE_MAP[curr];
+    } else {
+      aces++;
+      return acc;
+    }
+  }, 0);
+
+  for (let i = 0; i < aces; i++) {
+    if (total + 11 > 21) total += 1;
+    else total += 11;
+  }
+
+  return total;
+}
+
+function victory() {
+  gameOver("You won!");
+}
+
+function bust() {
+  gameOver("You lost!");
+}
+
+function tie() {
+  gameOver("It's a tie!");
+}
+
+function gameOver(msg) {
+  hitButton.disabled = true;
+  stayButton.disabled = true;
+  text.innerText = msg;
+  messageDiv.style.display = "block";
+}
+
+// Clean up the game
+function cleanUp() {
+  messageDiv.style.display = "none";
+
+  // Remove cards from slots
+  playerCardSlot.innerHTML = "";
+  dealerCardSlot.innerHTML = "";
+
+  // Reset text
+  computerScoreText.innerText = "?";
+  playerScoreText.innerText = "";
+  text.innerText = "";
+
+  // Reset variables
   canHit = true;
   playerOffset = 0;
   dealerOffset = 0;
   playerTotal = 0;
   dealerTotal = 0;
-
-  cleanUp();
-
-  dealToDealer();
-  dealToPlayer();
-  dealToDealer();
-  dealToPlayer();
-}
-
-hitButton.addEventListener("click", () => {
-  if (canHit) dealToPlayer();
-});
-
-stayButton.addEventListener("click", () => {
-  canHit = false;
-  beginDealerTurn();
-});
-
-function dealToPlayer() {
-  const playerCard = deck.pop();
-  playerCardSlot.appendChild(playerCard.getHTML(playerOffset));
-
-  if (playerCard.value === "A" && playerTotal + 11 <= 21) playerTotal += 11;
-  else if (playerCard.value === "A" && playerTotal + 11 > 21) playerTotal += 1;
-  else playerTotal += CARD_VALUE_MAP[playerCard.value];
-
-  playerOffset += 2.5;
-  console.log("Player score: " + playerTotal);
-
-  if (playerTotal === 21) {
-    if (confirm("You WON")) startGame();
-    else startGame();
-  } else if (playerTotal > 21) {
-    if (confirm("You LOST")) startGame();
-    else startGame();
-  }
-}
-
-function beginDealerTurn() {
-  if (dealerTotal == 21) {
-    if (confirm("Dealer WON")) startGame();
-    else startGame();
-  } else if (dealerTotal < 16) {
-    dealToDealer();
-  } else if (dealerTotal > 21) {
-    if (confirm("You WON")) startGame();
-    else startGame();
-  } else {
-    dealToDealer();
-  }
-}
-
-function dealToDealer() {
-  const dealerCard = deck.pop();
-  dealerCardSlot.appendChild(dealerCard.getHTML(dealerOffset));
-  dealerTotal += CARD_VALUE_MAP[dealerCard.value];
-
-  dealerOffset += 2.5;
-  console.log("Dealer score: " + dealerTotal);
-}
-
-function cleanUp() {
-  playerCardSlot.innerHTML = "";
-  dealerCardSlot.innerHTML = "";
+  playerHand = [];
+  dealerHand = [];
 }

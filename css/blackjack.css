@@ -1,17 +1,21 @@
 .blackjack {
   display: none;
   grid-template-columns: repeat(4, 10rem);
-  grid-template-rows: 14rem 14rem 14rem 14rem;
+  grid-template-rows: 14rem 5rem 14rem 14rem;
   gap: 1rem;
   justify-content: center;
   padding: 2rem 0;
   background-color: lightgreen;
 }
 
+.blackjack .text {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
 .blackjack .computer-deck {
   background-image: url("../assets/deck_back.png");
   background-size: cover;
-
   grid-column-start: 3;
 }
 
@@ -20,8 +24,18 @@
   grid-column-start: 4;
 }
 
+.blackjack .computer-score {
+  grid-row-start: 4;
+  grid-column-start: 4;
+}
+
 .blackjack .player-card-slot {
   grid-row-start: 3;
+  grid-column-start: 2;
+}
+
+.blackjack .player-score {
+  grid-row-start: 4;
   grid-column-start: 2;
 }
 

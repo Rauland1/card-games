@@ -20,6 +20,10 @@ body {
   justify-content: center;
 }
 
+.score {
+  font-weight: bold;
+}
+
 .choose-game {
   display: flex;
   flex-direction: row;

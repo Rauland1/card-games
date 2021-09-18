@@ -8,6 +8,7 @@
     <script src="js/war.js" type="module"></script>
     <script src="js/blackjack.js" type="module"></script>
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
   </head>
   <body>
     <div class="title">Choose Game</div>
@@ -18,13 +19,20 @@
     </div>
 
     <div class="blackjack">
+      <div class="message">
+        <div class="text" id="bj--text"></div>
+        <br />
+        <button class="bj--buttons" id="start-game">New Game</button>
+      </div>
       <div class="computer-deck deck" id="bj--computer-deck"></div>
-      <div class="computer-card-slot card-slot" id="bj--computer-slot"></div>
-      <div class="player-card-slot card-slot" id="bj--player-slot"></div>
       <div class="buttons">
-        <button class="bj--buttons" id="hit">Hit</button>
+        <button class="bj--buttons" id="hit">Hit</button><br /><br />
         <button class="bj--buttons" id="stay">Stay</button>
       </div>
+      <div class="player-card-slot card-slot" id="bj--player-slot"></div>
+      <div class="computer-card-slot card-slot" id="bj--computer-slot"></div>
+      <div class="player-score score"></div>
+      <div class="computer-score score"></div>
     </div>
 
     <div class="war">
