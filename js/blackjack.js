@@ -7,6 +7,8 @@ document.getElementById("blackjack-btn").addEventListener("click", () => {
   document.querySelector(".blackjack").style.display = "grid";
   hitButton.disabled = true;
   stayButton.disabled = true;
+  // bank.innerText = 1000;
+  // bet.innerText = 0;
   messageDiv.style.display = "block";
   cleanUp();
 });
@@ -28,16 +30,20 @@ const CARD_VALUE_MAP = {
 };
 
 // Get DOM elements
-const dealerCardSlot = document.getElementById("bj--computer-slot");
-const playerCardSlot = document.getElementById("bj--player-slot");
 const playerScoreText = document.querySelector(".player-score");
 const computerScoreText = document.querySelector(".computer-score");
+// const betButtonsDiv = document.querySelector(".bet-buttons");
 const messageDiv = document.querySelector(".message");
+
+// const bet = document.getElementById("bet");
+// const bank = document.getElementById("bank");
 
 const text = document.getElementById("bj--text");
 const hitButton = document.getElementById("hit");
 const stayButton = document.getElementById("stay");
 const startButton = document.getElementById("start-game");
+const dealerCardSlot = document.getElementById("bj--computer-slot");
+const playerCardSlot = document.getElementById("bj--player-slot");
 
 // Initialize variables
 let deck, playerOffset, dealerOffset, playerTotal, dealerTotal, hiddenCardDiv;
@@ -50,6 +56,8 @@ let dealerHand = [];
 // Start Game
 function startGame() {
   console.clear();
+
+  // betButtonsDiv.style.display = "none";
   messageDiv.style.display = "none";
 
   // New Deck
@@ -103,18 +111,18 @@ stayButton.addEventListener("click", function dealerLoop() {
   computerScoreText.innerText = dealerTotal;
 
   if (dealerTotal >= 17 && dealerTotal <= 21) {
-    if (playerTotal > dealerTotal) victory();
-    else if (playerTotal < dealerTotal) bust();
-    else tie();
+    if (playerTotal > dealerTotal) return victory();
+    else if (playerTotal < dealerTotal) return bust();
+    else return tie();
   } else if (dealerTotal < 17) {
     if (playerTotal < dealerTotal) {
-      bust();
+      return bust();
     } else {
       setTimeout(dealerLoop, 1000);
     }
   } else {
     // If dealer hand > 21
-    victory();
+    return victory();
   }
 });
 
@@ -201,6 +209,7 @@ function gameOver(msg) {
   stayButton.disabled = true;
   text.innerText = msg;
   messageDiv.style.display = "block";
+  // betButtonsDiv.style.display = "flex";
 }
 
 // Clean up the game

@@ -8,6 +8,7 @@
 
 body {
   margin: 0;
+  background-color: #082032;
 }
 
 .title {
@@ -18,6 +19,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #ff4c29;
+  margin-top: 1.5rem;
 }
 
 .score {
